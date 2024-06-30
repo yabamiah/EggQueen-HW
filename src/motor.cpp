@@ -15,7 +15,7 @@ void motor::vrum_vrum()
 
     switch (dir)
     {
-    case Orientacao::frente :
+    case 1: //Orientacao::frente :
         digitalWrite(motor::in1, HIGH);
         digitalWrite(motor::in2, LOW);
         analogWrite(motor::ena, 100);
@@ -25,7 +25,7 @@ void motor::vrum_vrum()
         analogWrite(motor::enb, 100);
 
         break;
-    case Orientacao::direita :
+    case 2: //Orientacao::direita :
         digitalWrite(motor::in1, HIGH);
         digitalWrite(motor::in2, LOW);
         analogWrite(motor::ena, 100);
@@ -34,7 +34,7 @@ void motor::vrum_vrum()
         digitalWrite(motor::in4, LOW);
         analogWrite(motor::enb, 60);
         break;
-    case Orientacao::esquerda :
+    case 3: //Orientacao::esquerda :
         digitalWrite(motor::in1, HIGH);
         digitalWrite(motor::in2, LOW);
         analogWrite(motor::ena, 60);
@@ -43,7 +43,7 @@ void motor::vrum_vrum()
         digitalWrite(motor::in4, LOW);
         analogWrite(motor::enb, 100);
         break;
-    case Orientacao::parar :
+    case 0: //Orientacao::parar :
         analogWrite(motor::ena, 0);;
         analogWrite(motor::enb, 0);
         break;
