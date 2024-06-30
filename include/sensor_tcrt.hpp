@@ -8,9 +8,8 @@ enum Orientacao { parar = 0, frente, direita, esquerda }
 class SensorTcrt 
 {
     private:
-        int sensor_centro;
-        int sensor_direta;
-        int sensor_esquerda;
+        int sensor_centro, sensor_direta, sensor_esquerda;
+        int sensor_centro_val, sensor_direta_val, sensor_esquerda_val;
         int direcao {0};
 
     public:

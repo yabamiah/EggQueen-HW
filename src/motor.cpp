@@ -1,28 +1,51 @@
 #include "motor.hpp"
 
-motor::motor(int in1, int in2, int in_en)
-    : pin1(in1), pin2(in2), pin_en(in_en)
-{
-    pinMode(this->pin1, OUTPUT);
-    pinMode(this->pin2, OUTPUT);
-    pinMode(this->pin_en, OUTPUT);
-}
+pinMode(motor::ena, OUTPUT);
+pinMode(motor::in1, OUTPUT);
+pinMode(motor::in2, OUTPUT);
+pinMode(motor::enb, OUTPUT);
+pinMode(motor::in3, OUTPUT);
+pinMode(motor::in4, OUTPUT);
 
-void motor::set_velocidade(int vel)
+void motor::vrum_vrum()
 {
-    this->velocidade = vel;
-}
+    SensorTcrt sensor_ir;
+    sensor_ir.set_direcao();
+    int dir = sensor_ir.get_direcao();
 
-void motor::para_frente()
-{
-    analogWrite(this->pin_en, this->velocidade);
-    digitalWrite(this->pin1, HIGH);
-    digitalWrite(this->pin2, LOW);
-}
+    switch (dir)
+    {
+    case Orientacao::frente :
+        digitalWrite(motor::in1, HIGH);
+        digitalWrite(motor::in2, LOW);
+        analogWrite(motor::ena, 100);
 
-void motor::parar()
-{
-    analogWrite(this->pin_en, this->velocidade);
-    digitalWrite(this->pin1, HIGH);
-    digitalWrite(this->pin2, HIGH);
+        digitalWrite(motor::in3, HIGH);
+        digitalWrite(motor::in4, LOW);
+        analogWrite(motor::enb, 100);
+
+        break;
+    case Orientacao::direita :
+        digitalWrite(motor::in1, HIGH);
+        digitalWrite(motor::in2, LOW);
+        analogWrite(motor::ena, 100);
+
+        digitalWrite(motor::in3, HIGH);
+        digitalWrite(motor::in4, LOW);
+        analogWrite(motor::enb, 60);
+        break;
+    case Orientacao::esquerda :
+        digitalWrite(motor::in1, HIGH);
+        digitalWrite(motor::in2, LOW);
+        analogWrite(motor::ena, 60);
+
+        digitalWrite(motor::in3, HIGH);
+        digitalWrite(motor::in4, LOW);
+        analogWrite(motor::enb, 100);
+        break;
+    case Orientacao::parar :
+        analogWrite(motor::ena, 0);;
+        analogWrite(motor::enb, 0);
+        break;
+    }
 }

@@ -6,23 +6,29 @@ void Sensor::Sensor()
     pinMode(sensor_centro, INPUT);
     pinMode(sensor_direita, INPUT);
     pinMode(sensor_esquerda, INPUT);
+
+    this->sensor_centro_val = digitalRead(this->sensor_centro)
+    this->sensor_direito_val = digitalRead(this->sensor_direito)
+    this->sensor_esquerdo_val = digitalRead(this->sensor_esquerdo)
 }
 
 void Sensor::set_direcao()
 {
-    int sensor_centro_val = digitalRead(this->sensor_centro)
-    int sensor_direito_val = digitalRead(this->sensor_direito)
-    int sensor_esquerdo_val = digitalRead(this->sensor_esquerdo)
-
-    if (sensor_centro_val == LOW && sensor_direito_val == HIGH && sensor_esquerdo_val == HIGH)
+    if ( this->sensor_centro_val == HIGH &&
+         this->sensor_direito_val == LOW &&
+         this->sensor_esquerdo_val == LOW)
     {
         this->direcao = Orientacao::frente;
     }
-    else if (sensor_centro_val == LOW && sensor_direito_val == LOW && sensor_esquerdo_val == HIGH)
+    else if (this->sensor_centro_val == HIGH &&
+             this->sensor_direito_val == LOW &&
+            this->sensor_esquerdo_val == HIGH)
     {
         this->direcao = Orientacao::esquerda;
     }
-    else if(sensor_centro_val == LOW && sensor_direito_val == HIGH && sensor_esquerdo_val == LOW)
+    else if( this->sensor_centro_val == HIGH &&
+             this->sensor_direito_val == HIGH &&
+             this->sensor_esquerdo_val == LOW)
     {
         this->direcao = Orientacao::direta;
     }
