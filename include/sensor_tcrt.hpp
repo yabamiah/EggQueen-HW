@@ -16,7 +16,7 @@ class SensorTcrt
         Sensor();
 
         int get_direcao() const;
-        void set_direcao(int direcao);
+        void set_direcao();
 };
 
 #endif 
