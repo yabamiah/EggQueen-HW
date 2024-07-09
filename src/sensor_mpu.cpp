@@ -1,33 +1,29 @@
-#include "include/mpu.hpp"
+#include "mpu.hpp"
 
-SensorMpu::SensorMpu()
+MPU6050 mpu(Wire);
+Madgwick filter;
+
+void MPU::setup()
 {
-    this->mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
-    this->mpu.setGyroRange(MPU6050_RANGE_500_DEG);
-    this->mpu.setFilterBandwidth(MPU6050_BAND_5_HZ);
+	mpu.begin();
+	mpu.calcGyroOffsets(true);
+	filter.begin(549.78);
 }
 
-void SensorMpu::set_dados()
+void MPU::update_filter()
 {
-    this->mpu.getEvent(&a, &g); 
+	mpu.update();
+	filter.updateIMU(
+		mpu.getGyroX(),
+		mpu.getGyroY(),
+		mpu.getGyroZ(),
+		mpu.getAccX(),
+		mpu.getAccY(),
+		mpu.getAccZ()
+	);
 }
 
-std::vector<float> SensorMpu::get_acelaracoes() const
-{
-    std::vector<float> dados (3);
-    dados.push_back(this->aceleracao.acceleration.x);
-    dados.push_back(this->aceleracao.acceleration.y);
-    dados.push_back(this->aceleracao.acceleration.z);
-
-    return dados;
-}
-
-std::vector<float> SensorMpu::get_rotacoes() const
-{
-    std::vector<float> dados (3);
-    dados.push_back(this->rotacao.g.gyro.x);
-    dados.push_back(this->rotacao.g.gyro.y);
-    dados.push_back(this->rotacao.g.gyro.z);
-
-    return dados;
+float MPU::getDirection() {
+	auto heading = filter.getYaw();
+	return heading;
 }

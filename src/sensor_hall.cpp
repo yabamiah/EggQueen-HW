@@ -1,10 +1,14 @@
-#include "include/sensor_hall.hpp"
+#include "hall.hpp"
 
-SensorHall::SensorHall(int _pin)
-    : hall_sensor_pin(_pin)
-{
+void SensorHall::setup(int pin) {
     pinMode(this->hall_sensor_pin, INPUT);
-    attachInterrupt(digitalPinToInterrupt(this->hall_sensor_pin), sensor_hall_interrupt, FALLING);
+		SensorHall::instance = this;
+    attachInterrupt(
+			digitalPinToInterrupt(this->hall_sensor_pin),
+			[](){SensorHall::instance->sensor_hall_interrupt();},
+			FALLING
+	);
+
 }
 
 void SensorHall::set_velocidade()

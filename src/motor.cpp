@@ -1,51 +1,77 @@
-#include "motor.hpp"
+#include "dir.hpp"
+#include <Arduino.h>
 
-pinMode(motor::ena, OUTPUT);
-pinMode(motor::in1, OUTPUT);
-pinMode(motor::in2, OUTPUT);
-pinMode(motor::enb, OUTPUT);
-pinMode(motor::in3, OUTPUT);
-pinMode(motor::in4, OUTPUT);
+void Motor::loop() {
+  int sensor_right = digitalRead(digital_pin_right);
+  int sensor_mid  = digitalRead(digital_pin_mid);
+  int sensor_left  = digitalRead(digital_pin_left);
 
-void motor::vrum_vrum()
-{
-    SensorTcrt sensor_ir;
-    sensor_ir.set_direcao();
-    int dir = sensor_ir.get_direcao();
-
-    switch (dir)
-    {
-    case 1: //Orientacao::frente :
-        digitalWrite(motor::in1, HIGH);
-        digitalWrite(motor::in2, LOW);
-        analogWrite(motor::ena, 100);
-
-        digitalWrite(motor::in3, HIGH);
-        digitalWrite(motor::in4, LOW);
-        analogWrite(motor::enb, 100);
-
-        break;
-    case 2: //Orientacao::direita :
-        digitalWrite(motor::in1, HIGH);
-        digitalWrite(motor::in2, LOW);
-        analogWrite(motor::ena, 100);
-
-        digitalWrite(motor::in3, HIGH);
-        digitalWrite(motor::in4, LOW);
-        analogWrite(motor::enb, 60);
-        break;
-    case 3: //Orientacao::esquerda :
-        digitalWrite(motor::in1, HIGH);
-        digitalWrite(motor::in2, LOW);
-        analogWrite(motor::ena, 60);
-
-        digitalWrite(motor::in3, HIGH);
-        digitalWrite(motor::in4, LOW);
-        analogWrite(motor::enb, 100);
-        break;
-    case 0: //Orientacao::parar :
-        analogWrite(motor::ena, 0);;
-        analogWrite(motor::enb, 0);
-        break;
-    }
+  if (sensor_left == HIGH && sensor_mid == HIGH && sensor_right == LOW)
+  {
+      left();
+      Serial.println("Esquerda");
+  }   
+  else if (sensor_left == HIGH && sensor_mid == LOW && sensor_right == LOW)
+  {
+      left();
+      Serial.println("Esquerda");
+  }   
+  else if(sensor_left == LOW && sensor_mid == HIGH && sensor_right == HIGH)
+  {
+      right();
+      Serial.println("Direita");
+  }   
+  else if(sensor_left == LOW && sensor_mid == HIGH && sensor_right == LOW)
+  {
+      foward();
+      Serial.println("Frente");
+  }    
+  else if(sensor_left == LOW && sensor_mid == LOW && sensor_right == HIGH)
+  {
+      right();
+      Serial.println("Direita");
+  }
+  else 
+  {
+      stop();
+      Serial.println("Parar");
+  }
 }
+
+void Motor::foward()
+{
+    digitalWrite(in1, HIGH);
+    digitalWrite(in2, LOW);
+    analogWrite(ena, minSpeed);
+
+    digitalWrite(in3, HIGH);
+    digitalWrite(in4, LOW);
+    analogWrite(enb, minSpeed);
+
+}
+void Motor::left(){
+    digitalWrite(in1, HIGH);
+    digitalWrite(in2, LOW);
+    analogWrite(ena, midSpeed);
+
+    digitalWrite(in3, HIGH);
+    digitalWrite(in4, LOW);
+    analogWrite(enb, minSpeed);
+}
+
+void Motor::right(){
+    digitalWrite(in1, HIGH);
+    digitalWrite(in2, LOW);
+    analogWrite(ena, minSpeed);
+
+    digitalWrite(in3, HIGH);
+    digitalWrite(in4, LOW);
+    analogWrite(enb, midSpeed); 
+}
+
+void Motor::stop(){
+		isRunning = false;	
+    analogWrite(ena, 0);
+    analogWrite(enb, 0);
+}
+

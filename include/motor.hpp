@@ -1,21 +1,28 @@
-#ifndef MOTOR_HPP
-#define MOTOR_HPP
+#pragma once
 
-#include "Arduino"
-#include "sensor_tcrt.hpp"
+class Motor {
+public:
+	void loop();	
+	bool isRunning = true;
+private:
+	const int in1 = 26; 
+	const int in2 = 25;
+	const int in3 = 32;
+	const int in4 = 35;
 
-namespace motor
-{
-    const int in1 = 32;
-    const int in2 = 35;
-    const int ena = 33;
-    const int in3 = 26;
-    const int in4 = 25;
-    const int enb = 27;
+	const int ena = 27;
+	const int enb = 33;
 
-    void vrum_vrum();
+	const int maxSpeed = 180;
+	const int minSpeed = 180;
+	const int midSpeed = 20;
 
-} // namespace motor
+	const int digital_pin_right = 5;
+	const int digital_pin_mid = 19;
+	const int digital_pin_left = 18;
 
-
-#endif // MOTOR_HPP
+	void foward();
+	void left();
+	void right();
+	void stop();
+};
